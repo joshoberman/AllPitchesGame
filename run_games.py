@@ -10,27 +10,17 @@ import pandas as pd
          
 def main():
     def checkData(subj):
-        if VERSION==2:
-            if path.exists("Subject %s/LabelsCongruent/"%subj):
+        if VERSION==1:
+            if path.exists("Subject %s/Variance/"%subj):
                 subj = raw_input("Data already exists for that subject, Please choose a different subject number: ")
                 return checkData(subj)
-        elif VERSION==3:
-            if path.exists("Subject %s/LabelsIncongruent/"%subj):
-                subj = raw_input("Data already exists for that subject, Please choose a different subject number: ")
-                return checkData(subj)
-        elif VERSION==4:
-            if path.exists("Subject %s/NoLabels/"%subj):
+        elif VERSION==2:
+            if path.exists("Subject %s/NoVariance/"%subj):
                 subj = raw_input("Data already exists for that subject, Please choose a different subject number: ")
                 return checkData(subj)
         return subj
     
-    CONDITION = int(raw_input("Condition (1-3): "))
-    if CONDITION == 1:
-        VERSION = 2
-    elif CONDITION == 2:
-        VERSION = 3
-    elif CONDITION == 3:
-        VERSION = 4
+    VERSION = int(raw_input("Condition (1 or 2): "))
     SUBJECT = checkData(subj = raw_input("Subject Number: "))
     if not path.exists("Subject %s"%SUBJECT):
         mkdir("Subject %s"%SUBJECT)
@@ -79,25 +69,18 @@ def main():
         # Pause for the next frame
         clock.tick(FPS)
 
-    if VERSION==2:
-        directory="Subject %s/LabelsCongruent/"%SUBJECT
+    if VERSION==1:
+        directory="Subject %s/Variance/"%SUBJECT
         if not path.exists(directory):
             mkdir(directory)
-    elif VERSION==3:
-        directory = "Subject %s/NoLabelsIncongruent/"%SUBJECT
-        if not path.exists(directory):
-            mkdir(directory)
-    elif VERSION==4:
-        directory = "Subject %s/NoLabels/"%SUBJECT
+    elif VERSION==2:
+        directory = "Subject %s/NoVariance/"%SUBJECT
         if not path.exists(directory):
             mkdir(directory)
 
-    print Game.predictionData
-    print Game.blockData
-    general = pd.DataFrame(Game.blockData)
-    predictions = pd.DataFrame(Game.predictionData)
+    print Game.gameData
+    general = pd.DataFrame(Game.gameData)
     general.to_csv(directory+'generalData.csv')
-    predictions.to_csv(directory+'predictionData.csv')
 
     #shut down pyo server
     s.stop()

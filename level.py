@@ -2,10 +2,10 @@ class Level(object):
     currentLevel = 1
     level_success = None
     ammo = None
-    def __init__(self):
+    def __init__(self, version):
         self.live_list = []
         self.kill_list = []
-        self.enemies_list = ['A','A','A','A','B','B','B','B','C','C','C','C','D','D','D','D']
+        self.enemies_list = ['A1','A2','A3','A4','A5','A6','B1','B2','B3','B4','B5','B6']
         random.shuffle(self.enemies_list)
         if self.currentLevel==1 or self.currentLevel==2:
             self.ammo = 60
@@ -36,5 +36,5 @@ class Level(object):
         Game.stick_sensitivity += 0.1
         
     
-    def load_level(self):
-        self.__init__()
+    def load_level(self, version):
+        self.__init__(version)
